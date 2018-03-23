@@ -9,7 +9,7 @@ output: rmarkdown::github_document
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.path = "README_figures/")
+knitr::opts_chunk$set(echo = TRUE, fig.path = "README_figures/", dev = "png")
 ```
 
 # speciesrangeR - species range maps in R
@@ -60,10 +60,12 @@ sal_atra_ita <- get_species_data("Salamandra atra", return_clean = TRUE,
                                  return = "sp", country = "ITA")
 ```
 
-```{r include=FALSE}
+```{r map1, include=FALSE}
 p1 <- mapview(sal_atra_ita)
-p1
-mapshot(p1, file = "map1.png")
+
+folder_path <- paste0(getwd(), "/README_figures/")
+
+mapshot(p1, file = paste0(folder_path, "map1.png"))
 ```
 
 ---
@@ -78,13 +80,12 @@ We will preview retrieved species data.
 # Plot data
 mapview(sal_atra_ita)
 ```
-![](map1.png)  
+![Retrieved species occurences](README_figures/map1.png)  
 
 One point is in Torino and is clearly wrong datapoint. Most likely the point is assigned to an instution where the specimen is storaged. 
-```{r map_torino, include = FALSE}
-
+```{r map2, include = FALSE}
 p2 <- mapview(sal_atra_ita[which.min(sal_atra_ita@coords), ])
-mapshot(p2, file = "map2.png")
+mapshot(p2, file = paste0(folder_path, "map2.png"))
 
 ```
 
@@ -92,7 +93,7 @@ mapshot(p2, file = "map2.png")
 # Plot the most easterly point 
 mapview(sal_atra_ita[which.min(sal_atra_ita@coords), ])
 ```
-![](map2.png)
+![](README_figures/map2.png)
 
 
 Function `get_species_data()` has argument return_clean which uses [`scrubr`](https://github.com/ropensci/scrubr) package to clean wrong data. According to the documentation of scrubr package, removing of these cases is on a feature list to be implemented, but now we will remove the wrong point manually.
@@ -104,9 +105,9 @@ sal_atra_ita_clean <- sal_atra_ita[-which.min(sal_atra_ita@coords), ]
 ```
 
 
-```{r map_cleaned, include = FALSE}
+```{r map3, include = FALSE}
 p3 <- mapview(sal_atra_ita_clean)
-mapshot(p3, file = "map3.png")
+mapshot(p3, file = paste0(folder_path, "map3.png"))
 
 ```
 
@@ -115,7 +116,7 @@ Let's plot the data again.
 mapview(sal_atra_ita_clean)
 ```
 
-![](map3.png)    
+![](README_figures/map3.png)    
   
   
 On the first look it looks better. Now we will calculate the extent of occurence (EOO).
@@ -133,7 +134,7 @@ sal_atra_eoo <- get_eoo(sal_atra_ita_clean, return = "sp")
 
 ```{r map_eoo, include = FALSE}
 p4 <- mapview(sal_atra_eoo)
-mapshot(p4, file = "map4.png")
+mapshot(p4, file = paste0(folder_path, "map4.png"))
 
 ```
 
@@ -142,7 +143,7 @@ Plotting the extent of occurence.
 mapview(sal_atra_eoo)
 ```
 
-![](map4.png)
+![](README_figures/map4.png)
 
 ---
 
@@ -168,7 +169,7 @@ sal_atra_esh <- get_esh(species_data = sal_atra_ita_clean,
 p5 <- mapview(sal_atra_esh, map.types = "Stamen.TerrainBackground", 
               alpha.regions = 0.5, lwd = 3) + mapview(sal_atra_ita_clean, col.regions = "red")
 
-mapshot(p5, file = "map5.png")
+mapshot(p5, file = paste0(folder_path, "map5.png"))
 
 ```
 
@@ -178,4 +179,4 @@ mapview(sal_atra_esh)
 ```
 
 Extent of suitable habitat with filtered elevation values. **NOTE** - there are some errors in the overlap of point due to raster aggregation, use better example.
-![](map5.png)
+![](README_figures/map5.png)

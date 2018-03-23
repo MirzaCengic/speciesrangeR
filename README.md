@@ -62,7 +62,7 @@ We will preview retrieved species data.
 mapview(sal_atra_ita)
 ```
 
-![](map1.png)
+![Retrieved species occurences](README_figures/map1.png)
 
 One point is in Torino and is clearly wrong datapoint. Most likely the point is assigned to an instution where the specimen is storaged.
 
@@ -71,7 +71,7 @@ One point is in Torino and is clearly wrong datapoint. Most likely the point is 
 mapview(sal_atra_ita[which.min(sal_atra_ita@coords), ])
 ```
 
-![](map2.png)
+![](README_figures/map2.png)
 
 Function `get_species_data()` has argument return\_clean which uses [`scrubr`](https://github.com/ropensci/scrubr) package to clean wrong data. According to the documentation of scrubr package, removing of these cases is on a feature list to be implemented, but now we will remove the wrong point manually.
 
@@ -86,7 +86,7 @@ Let's plot the data again.
 mapview(sal_atra_ita_clean)
 ```
 
-![](map3.png)
+![](README_figures/map3.png)
 
 On the first look it looks better. Now we will calculate the extent of occurence (EOO).
 
@@ -108,7 +108,7 @@ Plotting the extent of occurence.
 mapview(sal_atra_eoo)
 ```
 
-![](map4.png)
+![](README_figures/map4.png)
 
 ------------------------------------------------------------------------
 
@@ -133,4 +133,4 @@ Let's plot the extent of suitable habitat with the overlaid points used for crea
 mapview(sal_atra_esh)
 ```
 
-Extent of suitable habitat with filtered elevation values. **NOTE** - there are some errors in the overlap of point due to raster aggregation, use better example. ![](map5.png)
+Extent of suitable habitat with filtered elevation values. **NOTE** - there are some errors in the overlap of point due to raster aggregation, use better example. ![](README_figures/map5.png)
