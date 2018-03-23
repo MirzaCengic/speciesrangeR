@@ -3,7 +3,6 @@
 export(get_eoo)
 export(get_esh)
 export(get_species_data)
-<<<<<<< HEAD
 import(raster)
 import(scrubr)
 import(sf)
@@ -14,6 +13,3 @@ importFrom(magrittr,"%>%")
 importFrom(raster,getData)
 importFrom(rgeos,gConvexHull)
 importFrom(stringr,str_detect)
-=======
-importFrom(magrittr,"%>%")
->>>>>>> 4fbb609b11593f753593f2ac41b03d42cf995f43
