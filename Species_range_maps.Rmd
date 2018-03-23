@@ -1,6 +1,8 @@
 ---
 title: "Species range maps in R"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
 Stuff TODO: -------------------------------------------------------------
@@ -31,8 +33,8 @@ if(!require(pacman))
   install.packages("pacman")
 }
 
-pacman::p_load(spocc, sf, mapview, lubridate, dplyr, raster,
-               sf, scrubr, stringr, sp, rgeos, dismo, broom)
+pacman::p_load(spocc, sf, mapview, lubridate, dplyr, raster, tictoc,
+               sf, scrubr, stringr, sp, rgeos, dismo, broom, tmap)
 ```
 
 
@@ -89,7 +91,7 @@ plot(sal_atra_eoo)
 
 ```
 
-In this part, we will extract extent of suitable habitat by filtering extent of occurence (EOO) within min-max values of a raster variable. In future multiple rasters + categorical variables.
+In this part, we will extract extent of suitable habitat by filtering extent of occurence (EOO) within min-max values of a raster variable. In future multiple rasters + categorical variables. Add later custom cutoff values and function passing instead of min/max.
 
 ```{r get_esh}
 
@@ -97,14 +99,28 @@ srtm_italy <- raster("Y:/Mirza_Cengic/Projects/Other/GSoC/srtm_39_03.tif")
 
 srtm_italy_aggregated <- aggregate(srtm_italy, fact = 20)
 # Might take time with fine cell rasters
+tic("Calculate ESH")
 sal_atra_esh <- get_esh(species_data = sal_atra_ita_clean, 
                         species_eoo = sal_atra_eoo,
                         habitat_variable = srtm_italy_aggregated)
-  
-plot(sal_atra_esh)
+toc()
+mapview(sal_atra_esh)
+
 
 ```
 
+Try tmap
+
+```{r tmap, eval=FALSE, include=FALSE}
+data(Europe)
+
+p <- tm_shape(Europe[Europe$name=="Italy", ]) +
+    tm_polygons() +
+tm_shape(sal_atra_esh) +
+    tm_polygons()
+
+p
+```
 
 
 
