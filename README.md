@@ -47,6 +47,6 @@ sal_atra_map <- mapview(sal_atra_ita)
 mapshot(sal_atra_map, file = "map.png")
 ```
 
-    ## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
+Previewing retrieved species data.
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+![](map.png)
