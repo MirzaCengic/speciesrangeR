@@ -58,15 +58,23 @@ get_species_data <- function(species_name, return = "sf",
   if (return_clean)
   {
     sp_data <- sp_data %>%
-      coord_unlikely(lat = "latitude", lon = "longitude", drop = TRUE) %>%
-      coord_incomplete(lat = "latitude", lon = "longitude", drop = TRUE) %>%
-      coord_impossible(lat = "latitude", lon = "longitude", drop = TRUE) %>%
-      sf::st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>%
-      as("Spatial")
+      scrubr::coord_unlikely(lat = "latitude", lon = "longitude", drop = TRUE) %>%
+      scrubr::coord_incomplete(lat = "latitude", lon = "longitude", drop = TRUE) %>%
+      scrubr::coord_impossible(lat = "latitude", lon = "longitude", drop = TRUE) %>%
+      sf::st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+
+    sp_data$longitude <- sf::st_coordinates(sp_data)[, 1]
+    sp_data$latitude <- sf::st_coordinates(sp_data)[, 2]
+
+    sp_data <- as(sp_data, "Spatial")
   } else {
     sp_data <- sp_data %>%
-      sf::st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>%
-      as("Spatial")
+      sf::st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+
+    sp_data$longitude <- sf::st_coordinates(sp_data)[, 1]
+    sp_data$latitude <- sf::st_coordinates(sp_data)[, 2]
+
+    sp_data <- as(sp_data, "Spatial")
   }
   if (nchar(country) > 1)
   {
