@@ -36,7 +36,6 @@ get_species_data <- function(species_name, return = "sf",
 {
   # Basic argument checks
   stopifnot(return %in% c("sf", "sp"), is.character(species_name))
-  
   # Get species spatial data from GBIF
   sp_data <- spocc::occ(query = species_name, 
                         from = "gbif",
@@ -59,8 +58,7 @@ get_species_data <- function(species_name, return = "sf",
       sf::st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>%
       as("Spatial")
   }
-  
-  if (length(country) > 1)
+  if (nchar(country) > 1)
   {
     country_shape <- raster::getData("GADM", country = country, level = 0)
     sp_data <- sp_data[country_shape, ]
