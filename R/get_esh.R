@@ -7,10 +7,18 @@
 #' @param species_eoo Output of get_eoo() function. Currently only sp object.
 #' @param habitat_variable Raster layer. Should be continous variable with same CRS and overlapping extent.
 #'
-#' @return
+#' @return Spatial object (currently only sp class - polygon)
 #' @export
 #'
-#' @examples
+#' @examples sal_atra <- get_species_data("Salamandra atra")
+#' sal_atra_eoo <- get_eoo(sal_atra, return = "sp")
+#' # Load elevation data
+#' srtm_italy <- raster("Y:/Mirza_Cengic/Projects/Other/GSoC/srtm_39_03.tif")
+#'
+#' sal_atra_esh <- get_esh(species_data = sal_atra,
+#'                         species_eoo = sal_atra_eoo,
+#'                         habitat_variable = srtm_italy)
+
 get_esh <- function(species_data, species_eoo, habitat_variable)
 {
   data_cropped <- raster::crop(habitat_variable, species_eoo)
