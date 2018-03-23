@@ -2,10 +2,7 @@
 % Please edit documentation in R/get_esh.R
 \name{get_esh}
 \alias{get_esh}
-\title{Get extent of suitable habitat (ESH).
-Retrieve extent of suitable habitat according to a single environmental variable.
-Variable should be continous raster (in future add multiple rasters + categorical) variables.
-Function removes the species extent of occurence outside of minimum and maximum values of raster variable.}
+\title{Get extent of suitable habitat (ESH).}
 \usage{
 get_esh(species_data, species_eoo, habitat_variable)
 }
@@ -20,7 +17,6 @@ get_esh(species_data, species_eoo, habitat_variable)
 Spatial object (currently only sp class - polygon)
 }
 \description{
-Get extent of suitable habitat (ESH).
 Retrieve extent of suitable habitat according to a single environmental variable.
 Variable should be continous raster (in future add multiple rasters + categorical) variables.
 Function removes the species extent of occurence outside of minimum and maximum values of raster variable.

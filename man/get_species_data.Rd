@@ -2,9 +2,7 @@
 % Please edit documentation in R/get_species_data.R
 \name{get_species_data}
 \alias{get_species_data}
-\title{Get species data
-Retrieve species data from GBIF repository. You can use species binomial name
-to query the database. Query is passed to spocc::occ() function (use ... to pass further arguments to this function).}
+\title{Get species data}
 \usage{
 get_species_data(species_name, return = "sf", return_clean = FALSE,
   country = "", ...)
@@ -30,7 +28,6 @@ getData('ISO3') to see the available country options. #' @param ...}
 A spatial object (sf or sp class)
 }
 \description{
-Get species data
 Retrieve species data from GBIF repository. You can use species binomial name
 to query the database. Query is passed to spocc::occ() function (use ... to pass further arguments to this function).
 }

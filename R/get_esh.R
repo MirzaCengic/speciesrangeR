@@ -1,4 +1,5 @@
 #' Get extent of suitable habitat (ESH).
+#'
 #' Retrieve extent of suitable habitat according to a single environmental variable.
 #' Variable should be continous raster (in future add multiple rasters + categorical) variables.
 #' Function removes the species extent of occurence outside of minimum and maximum values of raster variable.

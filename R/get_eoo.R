@@ -1,4 +1,3 @@
-#### EOO function ####
 #' Get extent of occurence (EOO).
 #'
 #' @param species_data Output of get_species_data() function. Supports sp and sf objects.
