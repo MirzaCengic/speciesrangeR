@@ -1,4 +1,3 @@
-#### EOO function ####
 #' Get extent of occurence (EOO).
 #'
 #' @param species_data Output of get_species_data() function. Supports sp and sf objects.
@@ -7,6 +6,13 @@
 #'
 #' @return A spatial object (sf or sp class).
 #' @export
+#'
+#' @importFrom stringr str_detect
+#' @importFrom rgeos gConvexHull
+#' @import sf
+#' @import sp
+#' @importFrom dplyr mutate
+#'
 #'
 #' @examples sal_atra <- get_species_data("Salamandra atra")
 #' sal_atra_eoo <- get_eoo(sal_atra, return = "sp")
@@ -29,7 +35,7 @@ get_eoo <- function(species_data, return = "sf")
         sf::st_as_sf()
 
       species_chull <- species_chull %>%
-        mutate(
+        dplyr::mutate(
           name = unique(species_data$name),
           prov = unique(species_data$prov))
 
@@ -49,7 +55,7 @@ get_eoo <- function(species_data, return = "sf")
         sf::st_as_sf()
 
       species_chull <- species_chull %>%
-        mutate(
+        dplyr::mutate(
           name = unique(species_data$name),
           prov = unique(species_data$prov))
 
