@@ -1,0 +1,112 @@
+---
+title: "Species range maps in R"
+output: html_notebook
+---
+
+Stuff TODO: -------------------------------------------------------------
+
+Easy: write a script to download occurrence data from GBIF for a species and
+display them on a map
+
+Medium: Draw a convex hull polygon around the points in the earlier test.
+
+Hard: Clip the polygon you generated in medium test to world
+map (Keep only part of the polygon which is on land).
+
+### 1. Get gbif species point data:
+Tasks: write function that retrieves point data for given species.
+Potential arguments - return_clean (clean data with that Ropensci pkg),
+bounding_box - return for given bounding box, country - return for given country
+
+#### 2. Draw polygons around points
+Tasks: write function that can give convex or concave hulls
+### 3. Clip to land area
+Tasks: instead for task 1 - move country argument here?
+
+# Bonus: fit bioclim model to filter out suitable habitat within the EOO
+
+```{r script_setup}
+if(!require(pacman))
+{
+  install.packages("pacman")
+}
+
+pacman::p_load(spocc, sf, mapview, lubridate, dplyr, raster,
+               sf, scrubr, stringr, sp, rgeos, dismo, broom)
+```
+
+
+## Working with speciesrangeR
+We will load here speciesrangeR package. Temporarily it is a set of scripts that can be sourced, but will be replaced with package that can be installed via devtools. Use get_species_data() to query [GBIF](https://www.gbif.org/). Function is a wrapper around occ() function from [spocc](https://ropensci.github.io/spocc/) package.
+
+```{r define_function}
+
+# source("https://github.com/MirzaCengic/speciesrangeR/blob/master/R/get_species_data.R")
+source("Y:/Mirza_Cengic/Projects/Other/GSoC/R/get_species_data.R")
+source("Y:/Mirza_Cengic/Projects/Other/GSoC/R/get_eoo.R")
+source("Y:/Mirza_Cengic/Projects/Other/GSoC/R/get_esh.R")
+
+```
+
+## Get occurence data from [GBIF](https://www.gbif.org/)
+Here we will retrieve species occurence data for species Salamandra atra. Function get_species_data() can take country argument, so we will query for data for Italy. Default limit of spocc:occ() function is 500 points, however you can pass a numeric value to "limit" argument. Country data is filtered afterwards, therefore the number of points does not have to correspond to limit. See help of the function for more details.
+
+We will inspect the data with some interactive mapping.
+```{r}
+
+
+sal_atra_ita <- get_species_data("Salamandra atra", return_clean = TRUE, 
+                                 return = "sp", country = "ITA")
+
+# Plot maps
+# mapview(sal_atra_ita)
+plot(sal_atra_ita)
+
+```
+
+One point is in Torino and is clearly wrong datapoint. Most likely the point is assigned to an instution where the specimen is storaged. 
+```{r}
+plot(sal_atra_ita[which.min(sal_atra_ita@coords), ])
+
+```
+
+Function get_species_data() has argument return_clean which uses [scrubr](https://github.com/ropensci/scrubr) package to clean wrong data. According to the documentation of scrubr package, removing of these cases is on a feature list to be implemented, but now we will do it manually.
+
+```{r}
+sal_atra_ita_clean <- sal_atra_ita[-which.min(sal_atra_ita@coords), ]
+
+plot(sal_atra_ita_clean)
+```
+
+## Extent of suitable habitat 
+
+Calculates excent of occurence using minimum convex hull from rgeos package. Can return simple feature or spatial points dataframe.
+```{r get_eoo}
+
+sal_atra_eoo <- get_eoo(sal_atra_ita_clean, return = "sp")
+
+plot(sal_atra_eoo)
+
+```
+
+In this part, we will extract extent of suitable habitat by filtering extent of occurence (EOO) within min-max values of a raster variable. In future multiple rasters + categorical variables.
+
+```{r get_esh}
+
+srtm_italy <- raster("Y:/Mirza_Cengic/Projects/Other/GSoC/srtm_39_03.tif")
+
+srtm_italy_aggregated <- aggregate(srtm_italy, fact = 20)
+# Might take time with fine cell rasters
+sal_atra_esh <- get_esh(species_data = sal_atra_ita_clean, 
+                        species_eoo = sal_atra_eoo,
+                        habitat_variable = srtm_italy_aggregated)
+  
+plot(sal_atra_esh)
+
+```
+
+
+
+
+
+
