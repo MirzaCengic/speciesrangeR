@@ -28,6 +28,7 @@
 #'
 #' @return A spatial object (sf or sp class)
 #' @export
+<<<<<<< HEAD
 #'
 #' @importFrom magrittr "%>%"
 #' @import spocc
@@ -36,6 +37,9 @@
 #' @import sf
 #' @importFrom raster getData
 #'
+=======
+#' @importFrom magrittr "%>%"
+>>>>>>> 4fbb609b11593f753593f2ac41b03d42cf995f43
 #' @examples sal_atra <- get_species_data("Salamandra atra")
 #' plot(sal_atra[1])
 #' sal_atra_ita <- get_species_data("Salamandra atra", return_clean = TRUE, country = "ITA", limit = 10000)
